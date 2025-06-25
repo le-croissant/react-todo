@@ -1,8 +1,10 @@
 ## React todo
 
-Here you can find source code for my todo app made with React. The app uses Vite template.
+A responsive, theme-switchable todo list built with React and Vite.
 
-Features:
+> This is a work in progress. Code will be rafactored and some features will be included in upcoming commits.
+
+### Features
 
 -   You can add, complete and remove tasks
 -   You can filter by all, active and finished
