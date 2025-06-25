@@ -1,0 +1,263 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+* {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --clr-accent: hsl(243, 100%, 69%);
+    --clr-error: hsl(15, 80%, 45%);
+    --clr-btn-txt: hsl(0, 0%, 100%);
+    --bd-rad: 0.5rem;
+}
+
+body[data-theme="light"] {
+    --bg: hsl(0, 0%, 100%);
+    --text: hsl(200, 30%, 10%);
+    --clr-outline: hsl(0, 0%, 75%);
+}
+
+body[data-theme="dark"] {
+    --bg: hsl(0, 0%, 15%);
+    --text: hsl(0, 0%, 100%);
+    --clr-outline: hsl(0, 0%, 50%);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--bg);
+    color: var(--text);
+    transition: all ease-in-out 0.1s;
+}
+
+main {
+    width: fit-content;
+    max-width: 45rem;
+    margin: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+button {
+    cursor: pointer;
+    transition: all ease-in-out 0.1s;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.header__top {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.header__btns {
+    display: flex;
+    justify-content: center;
+    gap: inherit;
+}
+
+.input,
+.btn {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: var(--bd-rad);
+    transition: all ease-in-out 0.1s;
+}
+
+.input {
+    --bd-width: 1px;
+    --bd-clr: var(--clr-outline);
+
+    border: transparent;
+    box-shadow: 0 0 0 var(--bd-width) var(--bd-clr);
+
+    padding: 0.5rem 1rem;
+
+    width: 30ch;
+    min-width: 10ch;
+
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+.input.error {
+    --bd-clr: var(--clr-error);
+}
+
+.input:focus {
+    --bd-width: 3px;
+    --bd-clr: var(--clr-accent);
+
+    outline: transparent;
+}
+
+.btn {
+    --btn-bg: var(--clr-accent);
+
+    cursor: pointer;
+
+    border: 1px solid var(--btn-bg);
+    background-color: var(--btn-bg);
+    color: var(--clr-btn-txt);
+
+    &:hover {
+        --btn-bg: hsl(from var(--clr-accent) h s 63%);
+    }
+}
+
+#theme-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__nav {
+    list-style: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    & li {
+        cursor: pointer;
+        text-decoration: underline;
+
+        transition: all ease-in-out 0.1s;
+
+        &:hover {
+            color: var(--clr-accent);
+        }
+    }
+}
+
+.modal-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    background-color: var(--bg);
+    padding: 1.5rem;
+    border-radius: var(--bd-rad);
+}
+
+.modal > .input-box {
+    display: flex;
+    flex-direction: inherit;
+    gap: 0.5rem;
+}
+
+.task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    max-width: 100%;
+
+    border-bottom: 1px solid var(--clr-accent);
+}
+
+.task .task__main {
+    padding: 0.5rem;
+
+    width: 90%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+
+    flex-grow: 1;
+}
+
+.task__main .task-text {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+.task input[type="checkbox"] {
+    position: absolute;
+    left: -1000%;
+    top: -1000%;
+}
+
+.custom-checkbox {
+    cursor: pointer;
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 1.25rem;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--clr-accent);
+    border-radius: calc(var(--bd-rad) / 2);
+
+    & > span {
+        color: var(--bg);
+        line-height: 1rem;
+    }
+}
+
+input[type="checkbox"]:checked + .custom-checkbox {
+    background-color: var(--clr-accent);
+
+    & > span {
+        color: var(--clr-btn-txt);
+    }
+}
+
+.task input[type="checkbox"]:checked ~ .task-text {
+    text-decoration: line-through;
+    color: var(--clr-outline);
+}
+
+.btn-remove {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    color: var(--clr-outline);
+}
+
+.btn-remove:hover {
+    color: var(--clr-error);
+}
