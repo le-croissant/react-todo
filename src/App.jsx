@@ -9,7 +9,9 @@ function App() {
         const todos = localStorage.getItem("todos");
         return todos ? JSON.parse(todos) : [];
     });
+    const [search, setSearch] = useState("");
 
+    // Checking preferred theme and setting default(light) if there is none
     useEffect(() => {
         if (localStorage.getItem("theme")) {
             setTheme(localStorage.getItem("theme"));
@@ -19,6 +21,24 @@ function App() {
         }
     }, [theme]);
 
+    useEffect(() => {
+        if (search.trim() === "") {
+            setTasks(() => {
+                const todos = localStorage.getItem("todos");
+                return todos ? JSON.parse(todos) : [];
+            });
+        } else {
+            setTasks(() => {
+                const todos = localStorage.getItem("todos");
+                const updatedTodos = JSON.parse(todos).filter((todo) =>
+                    todo.name.includes(search.trim())
+                );
+                return updatedTodos;
+            });
+        }
+    }, [search]);
+
+    // Switching theme from light to dark and vice versa
     const switchTheme = () => {
         const nextTheme = theme === "light" ? "dark" : "light";
         setTheme(nextTheme);
@@ -59,6 +79,8 @@ function App() {
                         className="input search"
                         placeholder="Search..."
                         autoComplete="off"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                     />
 
                     <div className="header__buttons">
