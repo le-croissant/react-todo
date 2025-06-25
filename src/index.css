@@ -7,32 +7,39 @@
     box-sizing: border-box;
 }
 
+/* Variables */
+
 :root {
     --clr-accent: hsl(243, 100%, 69%);
     --clr-error: hsl(15, 80%, 45%);
     --clr-btn-txt: hsl(0, 0%, 100%);
+
     --bd-rad: 0.5rem;
 }
 
 body[data-theme="light"] {
-    --bg: hsl(0, 0%, 100%);
-    --text: hsl(200, 30%, 10%);
+    --clr-bg: hsl(0, 0%, 100%);
+    --clr-txt: hsl(200, 30%, 10%);
     --clr-outline: hsl(0, 0%, 75%);
+    --clr-icon: hsl(0, 0%, 65%);
 }
 
 body[data-theme="dark"] {
-    --bg: hsl(0, 0%, 15%);
-    --text: hsl(0, 0%, 100%);
+    --clr-bg: hsl(0, 0%, 15%);
+    --clr-txt: hsl(0, 0%, 100%);
     --clr-outline: hsl(0, 0%, 50%);
+    --clr-icon: hsl(0, 0%, 50%);
 }
+
+/* Default styles */
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--clr-bg);
+    color: var(--clr-txt);
     transition: all ease-in-out 0.1s;
 }
 
@@ -52,29 +59,15 @@ button {
     transition: all ease-in-out 0.1s;
 }
 
-.header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.header__top {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.header__btns {
-    display: flex;
-    justify-content: center;
-    gap: inherit;
+ul {
+    list-style: none;
 }
 
 .input,
-.btn {
+.btn.default {
     font-size: 1rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
+
     border-radius: var(--bd-rad);
     transition: all ease-in-out 0.1s;
 }
@@ -86,65 +79,180 @@ button {
     border: transparent;
     box-shadow: 0 0 0 var(--bd-width) var(--bd-clr);
 
-    padding: 0.5rem 1rem;
+    background-color: var(--clr-bg);
+    color: var(--clr-txt);
 
-    width: 30ch;
-    min-width: 10ch;
+    &.error {
+        --bd-clr: var(--clr-error);
+    }
 
-    background-color: var(--bg);
-    color: var(--text);
+    &:focus {
+        --bd-width: 3px;
+        --bd-clr: var(--clr-accent);
+
+        outline: transparent;
+    }
 }
 
-.input.error {
-    --bd-clr: var(--clr-error);
-}
+.btn.default {
+    border: 1px solid var(--clr-accent);
 
-.input:focus {
-    --bd-width: 3px;
-    --bd-clr: var(--clr-accent);
-
-    outline: transparent;
-}
-
-.btn {
-    --btn-bg: var(--clr-accent);
-
-    cursor: pointer;
-
-    border: 1px solid var(--btn-bg);
-    background-color: var(--btn-bg);
+    background-color: var(--clr-accent);
     color: var(--clr-btn-txt);
 
     &:hover {
-        --btn-bg: hsl(from var(--clr-accent) h s 63%);
+        background-color: hsl(from var(--clr-accent) h s 63%);
+        border-color: hsl(from var(--clr-accent) h s 63%);
     }
 }
 
-#theme-switch {
+.btn.transparent {
+    border: none;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    color: var(--clr-icon);
+
+    &:hover {
+        color: var(--clr-txt);
+    }
 }
 
-.header__nav {
-    list-style: none;
+/* Header */
 
+.header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
 
-    & li {
-        cursor: pointer;
-        text-decoration: underline;
+    /* Top part includes search, new task button and theme switch */
 
-        transition: all ease-in-out 0.1s;
+    & .header__top {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
 
-        &:hover {
-            color: var(--clr-accent);
+        & .input.search {
+            width: 30ch;
+            min-width: 10ch;
+        }
+
+        & .header__buttons {
+            display: flex;
+            justify-content: inherit;
+            align-items: inherit;
+            gap: inherit;
+
+            & .btn#theme-switch {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0.5rem;
+            }
+        }
+    }
+
+    /* Bottom part includes filters: all, active, finished */
+
+    & .header__bottom .header__nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+
+        & .filter {
+            cursor: pointer;
+            text-decoration: underline;
+
+            transition: all ease-in-out 0.1s;
+
+            &:hover {
+                color: var(--clr-accent);
+            }
         }
     }
 }
+
+/* Styles for task list and task cards */
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+
+    & .task-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+
+        max-width: 100%;
+        padding: 0.5rem;
+
+        border-bottom: 1px solid var(--clr-accent);
+
+        & input[type="checkbox"] {
+            position: absolute;
+            left: -1000%;
+            top: -1000%;
+
+            &:checked + .custom-checkbox {
+                background-color: var(--clr-accent);
+
+                & > span {
+                    color: var(--clr-btn-txt);
+                }
+            }
+
+            &:checked ~ .task-card__text {
+                text-decoration: line-through;
+                color: var(--clr-icon);
+            }
+        }
+
+        & .custom-checkbox {
+            cursor: pointer;
+            user-select: none;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 1.25rem;
+            aspect-ratio: 1 / 1;
+            border: 1px solid var(--clr-accent);
+            border-radius: calc(var(--bd-rad) / 2);
+
+            & > span {
+                color: var(--clr-bg);
+                line-height: 1rem;
+            }
+        }
+
+        & .task-card__main {
+            width: 90%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 1rem;
+
+            flex-grow: 1;
+
+            & .task-card__text {
+                display: block;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+            }
+        }
+    }
+}
+
+/* Modal styles that include background and the modal itself */
 
 .modal-bg {
     position: absolute;
@@ -162,102 +270,20 @@ button {
     flex-direction: column;
     gap: 1rem;
 
-    background-color: var(--bg);
+    background-color: var(--clr-bg);
     padding: 1.5rem;
     border-radius: var(--bd-rad);
-}
 
-.modal > .input-box {
-    display: flex;
-    flex-direction: inherit;
-    gap: 0.5rem;
-}
-
-.task-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-}
-
-.task {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    max-width: 100%;
-
-    border-bottom: 1px solid var(--clr-accent);
-}
-
-.task .task__main {
-    padding: 0.5rem;
-
-    width: 90%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 1rem;
-
-    flex-grow: 1;
-}
-
-.task__main .task-text {
-    display: block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
-}
-
-.task input[type="checkbox"] {
-    position: absolute;
-    left: -1000%;
-    top: -1000%;
-}
-
-.custom-checkbox {
-    cursor: pointer;
-    user-select: none;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 1.25rem;
-    aspect-ratio: 1 / 1;
-    border: 1px solid var(--clr-accent);
-    border-radius: calc(var(--bd-rad) / 2);
-
-    & > span {
-        color: var(--bg);
-        line-height: 1rem;
+    & .modal__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
     }
-}
 
-input[type="checkbox"]:checked + .custom-checkbox {
-    background-color: var(--clr-accent);
-
-    & > span {
-        color: var(--clr-btn-txt);
+    & > .input-box {
+        display: flex;
+        flex-direction: inherit;
+        gap: 0.5rem;
     }
-}
-
-.task input[type="checkbox"]:checked ~ .task-text {
-    text-decoration: line-through;
-    color: var(--clr-outline);
-}
-
-.btn-remove {
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    color: var(--clr-outline);
-}
-
-.btn-remove:hover {
-    color: var(--clr-error);
 }

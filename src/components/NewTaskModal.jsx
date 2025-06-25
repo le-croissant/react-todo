@@ -46,7 +46,16 @@ function NewTaskModal({ closeModal, setTasks }) {
     return (
         <div className="modal-bg">
             <form className="modal" onSubmit={handleSubmit}>
-                <h2>New Task</h2>
+                <div className="modal__header">
+                    <h2>New Task</h2>
+                    <button
+                        type="button"
+                        className="btn transparent"
+                        onClick={() => closeModal()}
+                    >
+                        <span className="material-symbols-rounded">close</span>
+                    </button>
+                </div>
                 <div className="input-box">
                     {hasError && (
                         <label htmlFor="task-name">
@@ -64,7 +73,7 @@ function NewTaskModal({ closeModal, setTasks }) {
                         maxLength={150}
                     />
                 </div>
-                <button type="submit" className="btn">
+                <button type="submit" className="btn default">
                     Add task
                 </button>
             </form>

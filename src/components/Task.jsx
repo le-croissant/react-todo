@@ -19,8 +19,8 @@ function Task({ id, name, active, tasks, setTasks }) {
     };
 
     return (
-        <li className="task">
-            <div className="task__main">
+        <li className="task-card">
+            <div className="task-card__main">
                 <input
                     id={id}
                     type="checkbox"
@@ -32,13 +32,14 @@ function Task({ id, name, active, tasks, setTasks }) {
                         check_small
                     </span>
                 </label>
-                <span className="task-text">{name}</span>
+
+                <span className="task-card__text">{name}</span>
             </div>
 
             {!active && (
                 <button
                     type="button"
-                    className="btn-remove"
+                    className="btn transparent"
                     onClick={() => handleRemove(id)}
                 >
                     <span className="material-symbols-rounded">
