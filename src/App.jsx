@@ -12,6 +12,14 @@ function App() {
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState(0);
 
+    // If user visits the website for the first time
+    // add empty todos list to the localstorage
+    useEffect(() => {
+        if (!localStorage.getItem("todos")) {
+            localStorage.setItem("todos", JSON.stringify([]));
+        }
+    }, []);
+
     // Checking preferred theme and setting default(light) if there is none
     useEffect(() => {
         if (localStorage.getItem("theme")) {
@@ -22,6 +30,7 @@ function App() {
         }
     }, [theme]);
 
+    // Search implementation
     useEffect(() => {
         if (search.trim() === "") {
             setTasks(() => {
@@ -39,6 +48,7 @@ function App() {
         }
     }, [search]);
 
+    // Filter implementation
     useEffect(() => {
         switch (filter) {
             case 0:
