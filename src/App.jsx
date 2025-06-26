@@ -10,6 +10,7 @@ function App() {
         return todos ? JSON.parse(todos) : [];
     });
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState(0);
 
     // Checking preferred theme and setting default(light) if there is none
     useEffect(() => {
@@ -38,6 +39,35 @@ function App() {
         }
     }, [search]);
 
+    useEffect(() => {
+        switch (filter) {
+            case 0:
+                setTasks(() => {
+                    const todos = localStorage.getItem("todos");
+                    return todos ? JSON.parse(todos) : [];
+                });
+                break;
+            case 1:
+                setTasks(() => {
+                    const todos = localStorage.getItem("todos");
+                    const updatedTodos = JSON.parse(todos).filter(
+                        (todo) => todo.active === true
+                    );
+                    return updatedTodos;
+                });
+                break;
+            case 2:
+                setTasks(() => {
+                    const todos = localStorage.getItem("todos");
+                    const updatedTodos = JSON.parse(todos).filter(
+                        (todo) => todo.active === false
+                    );
+                    return updatedTodos;
+                });
+                break;
+        }
+    }, [filter]);
+
     // Switching theme from light to dark and vice versa
     const switchTheme = () => {
         const nextTheme = theme === "light" ? "dark" : "light";
@@ -48,14 +78,18 @@ function App() {
 
     // Task sort options
     const sortOptions = [
-        { value: "all", label: "all" },
-        { value: "active", label: "active" },
-        { value: "finished", label: "finished" },
+        { value: 0, label: "all" },
+        { value: 1, label: "active" },
+        { value: 2, label: "finished" },
     ];
     // Renders sort options
     const navLinks = sortOptions.map((option) => (
         <li className="filter" key={option.value}>
-            <a type="button" id={option.value}>
+            <a
+                type="button"
+                id={option.value}
+                onClick={() => setFilter(option.value)}
+            >
                 {option.label}
             </a>
         </li>
