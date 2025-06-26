@@ -1,17 +1,21 @@
-## React todo
+# React todo
 
 A responsive, theme-switchable todo list built with React using [Vite](https://vite.dev/) template.
 
+\> [Live demo](https://le-croissant.github.io/react-todo)
+
+## Data safety
+
 All data is stored locally in your browser.
 
-### Features
+## Features
 
--   You can add, complete and remove tasks
--   You can search tasks using searchbar
--   You can filter by all, active and finished
--   You can change theme from light to dark and vice versa
+-   Add, complete and remove tasks
+-   Search tasks using searchbar
+-   Filter by all, active and finished
+-   Change theme from light to dark and vice versa
 
-### Tech stack
+## Tech stack
 
 -   Vite
 -   React
