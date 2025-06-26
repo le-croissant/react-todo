@@ -15,6 +15,7 @@
     --clr-btn-txt: hsl(0, 0%, 100%);
 
     --bd-rad: 0.5rem;
+    --ln-height: 1.5;
 }
 
 body[data-theme="light"] {
@@ -34,19 +35,16 @@ body[data-theme="dark"] {
 /* Default styles */
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     background-color: var(--clr-bg);
     color: var(--clr-txt);
     transition: all ease-in-out 0.1s;
+    padding: 1rem;
 }
 
 main {
-    width: fit-content;
+    width: 100%;
     max-width: 45rem;
-    margin: 1rem;
+    margin: 0 auto;
 
     display: flex;
     flex-direction: column;
@@ -70,14 +68,19 @@ ul {
 
     border-radius: var(--bd-rad);
     transition: all ease-in-out 0.1s;
+
+    line-height: var(--ln-height);
 }
 
 .input {
     --bd-width: 1px;
     --bd-clr: var(--clr-outline);
+    --outline: 0 0 0 var(--bd-width) var(--bd-clr) inset;
+    --focus: 0 0 0 0px transparent;
 
-    border: transparent;
-    box-shadow: 0 0 0 var(--bd-width) var(--bd-clr);
+    border: none;
+
+    box-shadow: var(--outline), var(--focus);
 
     background-color: var(--clr-bg);
     color: var(--clr-txt);
@@ -87,14 +90,16 @@ ul {
     }
 
     &:focus {
-        --bd-width: 3px;
-        --bd-clr: var(--clr-accent);
+        --bd-clr: transparent;
+        --focus: 0 0 0 3px var(--clr-accent);
 
         outline: transparent;
     }
 }
 
 .btn.default {
+    box-sizing: content-box;
+
     border: 1px solid var(--clr-accent);
 
     background-color: var(--clr-accent);
@@ -103,6 +108,13 @@ ul {
     &:hover {
         background-color: hsl(from var(--clr-accent) h s 63%);
         border-color: hsl(from var(--clr-accent) h s 63%);
+    }
+
+    &.has-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
     }
 }
 
@@ -122,9 +134,12 @@ ul {
 /* Header */
 
 .header {
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    flex-grow: 0;
 
     /* Top part includes search, new task button and theme switch */
 
@@ -132,10 +147,10 @@ ul {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 1rem 0.5rem;
 
         & .input.search {
-            width: 30ch;
+            flex: 1 1 auto;
             min-width: 10ch;
         }
 
@@ -144,13 +159,6 @@ ul {
             justify-content: inherit;
             align-items: inherit;
             gap: inherit;
-
-            & .btn#theme-switch {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 0.5rem;
-            }
         }
     }
 
@@ -247,6 +255,7 @@ ul {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 word-break: break-word;
+                line-height: var(--ln-height);
             }
         }
     }
@@ -255,7 +264,7 @@ ul {
 /* Modal styles that include background and the modal itself */
 
 .modal-bg {
-    position: absolute;
+    position: fixed;
     inset: 0;
     display: flex;
     justify-content: center;
@@ -272,6 +281,7 @@ ul {
 
     background-color: var(--clr-bg);
     padding: 1.5rem;
+    margin: 0.5rem;
     border-radius: var(--bd-rad);
 
     & .modal__header {

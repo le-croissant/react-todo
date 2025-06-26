@@ -30,54 +30,6 @@ function App() {
         }
     }, [theme]);
 
-    // Search implementation
-    useEffect(() => {
-        if (search.trim() === "") {
-            setTasks(() => {
-                const todos = localStorage.getItem("todos");
-                return todos ? JSON.parse(todos) : [];
-            });
-        } else {
-            setTasks(() => {
-                const todos = localStorage.getItem("todos");
-                const updatedTodos = JSON.parse(todos).filter((todo) =>
-                    todo.name.includes(search.trim())
-                );
-                return updatedTodos;
-            });
-        }
-    }, [search]);
-
-    // Filter implementation
-    useEffect(() => {
-        switch (filter) {
-            case 0:
-                setTasks(() => {
-                    const todos = localStorage.getItem("todos");
-                    return todos ? JSON.parse(todos) : [];
-                });
-                break;
-            case 1:
-                setTasks(() => {
-                    const todos = localStorage.getItem("todos");
-                    const updatedTodos = JSON.parse(todos).filter(
-                        (todo) => todo.active === true
-                    );
-                    return updatedTodos;
-                });
-                break;
-            case 2:
-                setTasks(() => {
-                    const todos = localStorage.getItem("todos");
-                    const updatedTodos = JSON.parse(todos).filter(
-                        (todo) => todo.active === false
-                    );
-                    return updatedTodos;
-                });
-                break;
-        }
-    }, [filter]);
-
     // Switching theme from light to dark and vice versa
     const switchTheme = () => {
         const nextTheme = theme === "light" ? "dark" : "light";
@@ -86,14 +38,35 @@ function App() {
         localStorage.setItem("theme", nextTheme);
     };
 
+    // Search and filters implementation
+    useEffect(() => {
+        const todos = JSON.parse(localStorage.getItem("todos"));
+
+        let filteredTodos = todos;
+
+        if (filter === 1) {
+            filteredTodos = todos.filter((todo) => todo.active === true);
+        } else if (filter === 2) {
+            filteredTodos = todos.filter((todo) => todo.active === false);
+        }
+
+        if (search.trim() !== "") {
+            filteredTodos = filteredTodos.filter((todo) =>
+                todo.name.includes(search.trim())
+            );
+        }
+
+        setTasks(filteredTodos);
+    }, [search, filter]);
+
     // Task sort options
-    const sortOptions = [
+    const filterOptions = [
         { value: 0, label: "all" },
         { value: 1, label: "active" },
         { value: 2, label: "finished" },
     ];
     // Renders sort options
-    const navLinks = sortOptions.map((option) => (
+    const navLinks = filterOptions.map((option) => (
         <li className="filter" key={option.value}>
             <a
                 type="button"
@@ -138,7 +111,7 @@ function App() {
                         </button>
                         <button
                             type="button"
-                            className="btn default"
+                            className="btn default has-icon"
                             id="theme-switch"
                             onClick={switchTheme}
                         >
@@ -154,7 +127,7 @@ function App() {
                 </nav>
             </header>
 
-            <TaskList tasks={tasks} setTasks={setTasks} />
+            <TaskList tasks={tasks} setTasks={setTasks} filter={filter} />
         </main>
     );
 }
