@@ -2,7 +2,7 @@
 
 A responsive, theme-switchable todo list built with React using [Vite](https://vite.dev/) template.
 
-\> [Live demo](https://le-croissant.github.io/react-todo)
+\> [Live demo](https://frontend-dan.github.io/react-todo)
 
 ## Data safety
 
